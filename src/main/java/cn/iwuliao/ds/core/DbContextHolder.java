@@ -6,7 +6,7 @@ package cn.iwuliao.ds.core;
 public class DbContextHolder {
 
     public enum DbType {
-        MASTER, SLAVE
+        MASTER, SLAVE, SLAVE1
     }
 
     private static final ThreadLocal<DbType> contextHolder = new ThreadLocal<>();

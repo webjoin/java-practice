@@ -10,16 +10,27 @@ import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.BeanMetadataAttribute;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.*;
 import org.springframework.beans.factory.parsing.DefaultsDefinition;
 import org.springframework.beans.factory.support.*;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.json.YamlJsonParser;
 import org.springframework.cglib.beans.BeanMap;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ConfigurationClassPostProcessor;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
@@ -34,14 +45,17 @@ import org.yaml.snakeyaml.introspector.PropertyUtils;
 import org.yaml.snakeyaml.representer.Representer;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
  *
  */
 @Component
-public class DsScannerConfigurer {
+public class DsScannerConfigurer implements BeanFactoryAware, Ordered, ApplicationContextAware {
 
+    private BeanFactory beanFactory;
 
     private static final String PREFIX = "druid2.";
     private static final String DRUID_DS_PROPS_PREFIX = "druid.";
@@ -49,50 +63,38 @@ public class DsScannerConfigurer {
     private static final String MAPPERSCANNERCONFIGURER = "MapperScannerConfigurer";
     public static final String SQLSESSIONFACTORY = "SqlSessionFactory";
 
-    @Bean
-    public BeanDefinitionRegistryPostProcessor factory(final StandardServletEnvironment environment) {
 
-        return new BeanDefinitionRegistryPostProcessor() {
-            @Override
-            public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-                MutablePropertySources propertySources = environment.getPropertySources();
-                Properties properties = new Properties();
-                propertySources.forEach(x -> {
-                    Object source = x.getSource();
-                    if (source instanceof LinkedHashMap) {
-                        LinkedHashMap props = (LinkedHashMap) source;
-                        props.forEach((k, v) -> {
-                            String key = k.toString();
-                            boolean druid2 = key.startsWith(PREFIX);
-                            if (druid2) {
-                                properties.put(key, v);
-                            }
-                        });
-                    }
-                });
-                boolean empty = properties.isEmpty();
-                if (!empty) {
-                    DbConf1 dbConf1 = getDsConfBean(properties);
-                    try {
-                        registryDs(dbConf1, registry);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+    @Autowired
+    private DbConf dbConf;
 
-
-            @Override
-            public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
-            }
-        };
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 
-    private void registryDs(DbConf1 properties, BeanDefinitionRegistry registry) throws Exception {
-        String poolType = properties.getPoolType();
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+        try {
+            registryDs(registry);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public int getOrder() {
+        return -100;
+    }
+
+
+    private void registryDs(BeanDefinitionRegistry registry) throws ClassNotFoundException {
+        String poolType = dbConf.getPoolType();
         if (Objects.nonNull(poolType)) {
-            Map<String, Db> dbs = properties.getDbs();
+
+            Map<String, Db> dbs = dbConf.getDbs();
             Set<Map.Entry<String, Db>> entries = dbs.entrySet();
             for (Map.Entry<String, Db> entry : entries) {
                 String dbName = entry.getKey();
@@ -101,18 +103,24 @@ public class DsScannerConfigurer {
                 String mapperScannerPackage = value.getMapperScannerPackage();
                 String typeHandlersPackage = value.getTypeHandlersPackage();
                 Properties masterProperties = getDsProps(value.getMaster());
-                Properties slaveProperties = getDsProps(value.getSlave());
-
+                Map<String, Properties> slaves = value.getSlaves();
+                List<Properties> salves1 = new ArrayList<>();
+                if (Objects.nonNull(slaves)) {
+                    slaves.entrySet().forEach(x -> salves1.add(getDsProps(slaves.get(x))));
+                }
                 DruidDataSource master = new DruidDataSource();
                 master.setConnectProperties(masterProperties);
-                master.init();
-
-                DruidDataSource slave = new DruidDataSource();
-                slave.setConnectProperties(slaveProperties);
-                slave.init();
+                List<DruidDataSource> slaveDatasources = new ArrayList<>();
+                if (!salves1.isEmpty()) {
+                    salves1.forEach(x -> {
+                        DruidDataSource ds = new DruidDataSource();
+                        ds.setConnectProperties(x);
+                        slaveDatasources.add(ds);
+                    });
+                }
 
                 //获取动态数据源
-                registryDynamicDs(master, slave, dbName, registry);
+                registryDynamicDs(master, slaveDatasources, dbName, registry);
                 //事物
                 registryDynamicDsTrancationManager(dbName, registry);
 
@@ -124,6 +132,7 @@ public class DsScannerConfigurer {
             }
         }
     }
+
 
     private Properties getDsProps(Properties master) {
         Properties props = new Properties();
@@ -171,11 +180,14 @@ public class DsScannerConfigurer {
         registry.registerBeanDefinition(dbName + TRANSACTIONMANAGER, beanDefinition);
     }
 
-    private void registryDynamicDs(DruidDataSource master, DruidDataSource slave, String dbName, BeanDefinitionRegistry registry) {
+    private void registryDynamicDs(DruidDataSource master, List<DruidDataSource> slaves, String dbName, BeanDefinitionRegistry registry) {
 
         Map<Object, Object> targetDataResources = new HashMap<>();
         targetDataResources.put(DbContextHolder.DbType.MASTER, master);
-        targetDataResources.put(DbContextHolder.DbType.SLAVE, slave);
+        if (Objects.nonNull(slaves) && !slaves.isEmpty()) {
+            targetDataResources.put(DbContextHolder.DbType.SLAVE, slaves.get(0));
+        }
+
 
         GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setBeanClass(MasterSlaveRoutingDataSource.class);
@@ -186,7 +198,13 @@ public class DsScannerConfigurer {
     }
 
 
-    private DbConf1 getDsConfBean(Properties properties) {
+    /**
+     * 目前无效代码了
+     *
+     * @param properties
+     * @return
+     */
+    private DbConf getDsConfBean(Properties properties) {
         PropertiesToYamlConverter converter = new PropertiesToYamlConverter();
 
         StringBuilder sb = new StringBuilder();
@@ -207,25 +225,8 @@ public class DsScannerConfigurer {
 
         Map ymalMap = yaml.loadAs(docment, Map.class);
         String s = JsonUtil.toJsonStr(ymalMap);
-        DbConf1 dbConf11 = JsonUtil.json2Bean(s, DbConf1.class);
+        DbConf dbConf11 = JsonUtil.json2Bean(s, DbConf.class);
         return dbConf11;
     }
-
-    public static void main(String[] args) {
-        Map ymalMap = new HashMap();
-        ymalMap.put("poolType", "wwwww");
-        DbConf1 dbConf1 = new DbConf1();
-        BeanMap beanMap = BeanMap.create(dbConf1);
-        beanMap.putAll(ymalMap);
-
-        String s = JsonUtil.toJsonStr(ymalMap);
-        DbConf1 dbConf11 = JsonUtil.json2Bean(s, DbConf1.class);
-
-
-        System.out.println(dbConf11);
-
-    }
-
-
 }
 

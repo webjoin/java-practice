@@ -1,4 +1,17 @@
 
+
+datasource1:
+  pool-type: com.alibaba.druid.pool.DruidDataSource
+  ds:
+    url: jdbc:mysql://127.0.0.1:3306/dba?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&allowMultiQueries=true&useLocalSessionState=true&autoReconnect=true&failOverReadOnly=false&noAccessToProcedureBodies=true&useTimezone=true&serverTimezone=Hongkong
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    initialSize: '1'
+    minIdle: '1'
+    maxActive: '20'
+    testOnBorrow: 'true'
+
 druid2:
   poolType: com.alibaba.druid.pool.DruidDataSource
   dbs:
@@ -15,15 +28,25 @@ druid2:
         minIdle: '1'
         maxActive: '20'
         testOnBorrow: 'true'
-      slave:
-        url: jdbc:mysql://127.0.0.1:3306/dba?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&allowMultiQueries=true&useLocalSessionState=true&autoReconnect=true&failOverReadOnly=false&noAccessToProcedureBodies=true&useTimezone=true&serverTimezone=Hongkong
-        driverClassName: com.mysql.cj.jdbc.Driver
-        username: root
-        password: 123456
-        initialSize: '1'
-        minIdle: '1'
-        maxActive: '20'
-        testOnBorrow: 'true'
+      slaves:
+        slave0:
+          url: jdbc:mysql://127.0.0.1:3306/dba?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&allowMultiQueries=true&useLocalSessionState=true&autoReconnect=true&failOverReadOnly=false&noAccessToProcedureBodies=true&useTimezone=true&serverTimezone=Hongkong
+          driverClassName: com.mysql.cj.jdbc.Driver
+          username: root
+          password: 123456
+          initialSize: '1'
+          minIdle: '1'
+          maxActive: '20'
+          testOnBorrow: 'true'
+        slave1:
+          url: jdbc:mysql://127.0.0.1:3306/dba?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&allowMultiQueries=true&useLocalSessionState=true&autoReconnect=true&failOverReadOnly=false&noAccessToProcedureBodies=true&useTimezone=true&serverTimezone=Hongkong
+          driverClassName: com.mysql.cj.jdbc.Driver
+          username: root
+          password: 123456
+          initialSize: '1'
+          minIdle: '1'
+          maxActive: '20'
+          testOnBorrow: 'true'
     dbb:
       mapperLocations: classpath:mybatis/dbb/*.xml
       typeHandlersPackage:
@@ -37,15 +60,16 @@ druid2:
         minIdle: '1'
         maxActive: '20'
         testOnBorrow: 'true'
-      slave:
-        url: jdbc:mysql://127.0.0.1:3306/dbb?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&allowMultiQueries=true&useLocalSessionState=true&autoReconnect=true&failOverReadOnly=false&noAccessToProcedureBodies=true&useTimezone=true&serverTimezone=Hongkong
-        driverClassName: com.mysql.cj.jdbc.Driver
-        username: root
-        password: 123456
-        initialSize: '1'
-        minIdle: '1'
-        maxActive: '20'
-        testOnBorrow: 'true'
+      slaves:
+        slave0:
+          url: jdbc:mysql://127.0.0.1:3306/dbb?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&allowMultiQueries=true&useLocalSessionState=true&autoReconnect=true&failOverReadOnly=false&noAccessToProcedureBodies=true&useTimezone=true&serverTimezone=Hongkong
+          driverClassName: com.mysql.cj.jdbc.Driver
+          username: root
+          password: 123456
+          initialSize: '1'
+          minIdle: '1'
+          maxActive: '20'
+          testOnBorrow: 'true'
 
 logging:
   level:
