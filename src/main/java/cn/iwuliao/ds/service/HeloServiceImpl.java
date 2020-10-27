@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author tangyu
  * @since 2019-04-23 00:56
@@ -46,6 +48,11 @@ public class HeloServiceImpl implements HeloService {
     public Integer hib() {
         Integer id = mapperB.getId(1);
         return id;
+    }
+
+    @Override
+    public List<String> likeQry(String name) {
+        return aMapper.likeQry(name);
     }
 
 }
