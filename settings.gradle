@@ -1,2 +1,5 @@
 rootProject.name = 'java-practice'
+include 'base-lang'
+include 'multi-datasouce'
+include 'trade'
 
