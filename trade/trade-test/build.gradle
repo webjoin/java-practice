@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+group 'cn.viewt'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation(platform('org.junit:junit-bom:5.7.0'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    testCompile('cn.viewt:junit-util:1.0-SNAPSHOT') {
+        exclude(group: 'org.junit')
+    }
+
+    testImplementation('cn.viewt:log-util:1.0-SNAPSHOT')
+    testImplementation(project(":trade:trade-web"))
+    testImplementation(project(":trade:trade-api"))
+    testImplementation(project(":member:member-api"))
+    testCompile 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
+test {
+    useJUnitPlatform()
+}
+ext {
+    set('springCloudVersion', "Hoxton.SR6")
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

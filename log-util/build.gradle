@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+group 'cn.viewt'
+version '1.0-SNAPSHOT'
+
+jar.enabled=true
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.projectlombok:lombok:1.16.8'
+    annotationProcessor "org.projectlombok:lombok:1.16.8"
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework:spring-web'
+    implementation 'javax.servlet:javax.servlet-api'
+
+}

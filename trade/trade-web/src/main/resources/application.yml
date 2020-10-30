@@ -1,0 +1,44 @@
+#数据源
+appDs:
+  poolType: com.zaxxer.hikari.HikariDataSource
+  dbs:
+    dba:
+      mapperLocations: classpath:mybatis/dba/*.xml
+      configLocation: classpath:META-INF/mybatis-config.xml
+      mapperScannerPackage: cn.iwuliao.trade.busiservice.mapper.dba
+      master:
+        jdbcUrl: jdbc:mysql://10.211.55.5:3306/dba?serverTimezone=Hongkong
+        driverClassName: com.mysql.cj.jdbc.Driver
+        username: root
+        password: rootroot!123R
+        minimumIdle: '5'
+        maximumPoolSize: '8'
+      slave:
+        jdbcUrl: jdbc:mysql://10.211.55.5:3306/dba?serverTimezone=Hongkong
+        driverClassName: com.mysql.cj.jdbc.Driver
+        username: root
+        password: rootroot!123R
+        minimumIdle: '5'
+        maximumPoolSize: '8'
+    dbb:
+      mapperLocations: classpath:mybatis/dbb/*.xml
+      configLocation: classpath:META-INF/mybatis-config.xml
+      mapperScannerPackage: cn.iwuliao.trade.busiservice.mapper.dbb
+      master:
+        jdbcUrl: jdbc:mysql://10.211.55.5:3306/dbb?serverTimezone=Hongkong
+        driverClassName: com.mysql.cj.jdbc.Driver
+        username: root
+        password: rootroot!123R
+        minimumIdle: '5'
+        maximumPoolSize: '8'
+      slave:
+        jdbcUrl: jdbc:mysql://10.211.55.5:3306/dbb?serverTimezone=Hongkong
+        driverClassName: com.mysql.cj.jdbc.Driver
+        username: root
+        password: rootroot!123R
+        minimumIdle: '5'
+        maximumPoolSize: '8'
+
+logging:
+  level:
+    root: info

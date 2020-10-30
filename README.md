@@ -22,3 +22,13 @@
 2. 正常访问数据 http://localhost:8080/hi/hi  
 3. 正常新增数据 http://localhost:8080/hi/tx/commit
 4. 正常回滚数据 http://localhost:8080/hi/tx/rollback
+5. 格式化插件 eclipse
+
+1. db : 
+1. mapper : 
+1. util : 
+1. call service : https://docs.spring.io/spring-cloud-openfeign/docs/2.2.5.RELEASE/reference/html/  
+
+1. configuration : https://spring.io/projects/spring-cloud-config 
+1. trace : https://spring.io/projects/spring-cloud-sleuth
+2. testing : https://spring.io/guides/gs/contract-rest/

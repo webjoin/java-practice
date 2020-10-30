@@ -1,5 +1,11 @@
 rootProject.name = 'java-practice'
 include 'base-lang'
-include 'multi-datasouce'
-include 'trade'
+include 'db-util'
+include 'trade:trade-api'
+include 'trade:trade-web'
+include 'trade:trade-test'
+include 'junit-util'
+include 'log-util'
+include 'member:member-api'
+include 'spring-util'
 

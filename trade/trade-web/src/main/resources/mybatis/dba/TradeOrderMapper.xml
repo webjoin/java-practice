@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.iwuliao.trade.busiservice.mapper.dba.TradeOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.iwuliao.trade.entity.TradeOrderEntity">
+    <id column="trade_id" jdbcType="BIGINT" property="tradeId" />
+    <result column="voucher_no" jdbcType="BIGINT" property="voucherNo" />
+    <result column="payer_id" jdbcType="VARCHAR" property="payerId" />
+    <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
+    <result column="trade_amount" jdbcType="DECIMAL" property="tradeAmount" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="trade_status" jdbcType="VARCHAR" property="tradeStatus" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="extension" jdbcType="VARCHAR" property="extension" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    trade_id, voucher_no, payer_id, trade_type, trade_amount, product_code, trade_status, 
+    client_id, extension, create_time, submit_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade_order
+    where trade_id = #{tradeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from trade_order
+    where trade_id = #{tradeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.iwuliao.trade.entity.TradeOrderEntity">
+    insert into trade_order (trade_id, voucher_no, payer_id, 
+      trade_type, trade_amount, product_code, 
+      trade_status, client_id, extension, 
+      create_time, submit_time)
+    values (#{tradeId,jdbcType=BIGINT}, #{voucherNo,jdbcType=BIGINT}, #{payerId,jdbcType=VARCHAR}, 
+      #{tradeType,jdbcType=VARCHAR}, #{tradeAmount,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR}, 
+      #{tradeStatus,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{submitTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyColumn="trade_id"
+          keyProperty="tradeId"  parameterType="cn.iwuliao.trade.entity.TradeOrderEntity">
+    insert into trade_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tradeId != null">
+        trade_id,
+      </if>
+      <if test="voucherNo != null">
+        voucher_no,
+      </if>
+      <if test="payerId != null">
+        payer_id,
+      </if>
+      <if test="tradeType != null">
+        trade_type,
+      </if>
+      <if test="tradeAmount != null">
+        trade_amount,
+      </if>
+      <if test="productCode != null">
+        product_code,
+      </if>
+      <if test="tradeStatus != null">
+        trade_status,
+      </if>
+      <if test="clientId != null">
+        client_id,
+      </if>
+      <if test="extension != null">
+        extension,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tradeId != null">
+        #{tradeId,jdbcType=BIGINT},
+      </if>
+      <if test="voucherNo != null">
+        #{voucherNo,jdbcType=BIGINT},
+      </if>
+      <if test="payerId != null">
+        #{payerId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null">
+        #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAmount != null">
+        #{tradeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeStatus != null">
+        #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="extension != null">
+        #{extension,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.iwuliao.trade.entity.TradeOrderEntity">
+    update trade_order
+    <set>
+      <if test="voucherNo != null">
+        voucher_no = #{voucherNo,jdbcType=BIGINT},
+      </if>
+      <if test="payerId != null">
+        payer_id = #{payerId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null">
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAmount != null">
+        trade_amount = #{tradeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null">
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeStatus != null">
+        trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="extension != null">
+        extension = #{extension,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where trade_id = #{tradeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.iwuliao.trade.entity.TradeOrderEntity">
+    update trade_order
+    set voucher_no = #{voucherNo,jdbcType=BIGINT},
+      payer_id = #{payerId,jdbcType=VARCHAR},
+      trade_type = #{tradeType,jdbcType=VARCHAR},
+      trade_amount = #{tradeAmount,jdbcType=DECIMAL},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      extension = #{extension,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      submit_time = #{submitTime,jdbcType=TIMESTAMP}
+    where trade_id = #{tradeId,jdbcType=BIGINT}
+  </update>
+</mapper>

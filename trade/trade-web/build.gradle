@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+group 'cn.viewt'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+jar.enabled = true
+
+dependencies {
+
+
+    implementation(project(":trade:trade-api"))
+    implementation(project(":member:member-api"))
+
+//    compile 'cn.viewt:base-lang:1.0-SNAPSHOT'
+    compile 'org.mybatis:mybatis-spring:2.0.0'
+    compile 'org.projectlombok:lombok:1.16.8'
+    annotationProcessor "org.projectlombok:lombok:1.16.8"
+    compile 'org.springframework:spring-jdbc'
+    compile 'cn.viewt:db-util:1.0-SNAPSHOT'
+    compile 'cn.viewt:log-util:1.0-SNAPSHOT'
+    compile 'cn.viewt:spring-util:1.0-SNAPSHOT'
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    compile 'org.springframework:spring-tx'
+}
+ext {
+    set('springCloudVersion', "Hoxton.SR6")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

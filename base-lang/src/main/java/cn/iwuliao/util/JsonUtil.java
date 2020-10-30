@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * @author tangyu
@@ -27,7 +28,7 @@ public class JsonUtil {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
-        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL).registerModule(new JavaTimeModule());
     }
 
     /**
@@ -42,15 +43,12 @@ public class JsonUtil {
     }
 
     public static String toJsonArr(Object obj) {
-        final String json = toJsonStr(obj);
-        return Optional.ofNullable(json).orElse(MID_BRACKET);
+        return Optional.ofNullable(toJsonStr(obj)).orElse(MID_BRACKET);
     }
 
     public static String toJsonStr(Object obj) {
-        final String json;
         try {
-            json = OBJECT_MAPPER.writeValueAsString(obj);
-            return json;
+            return OBJECT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new JsonParseException(e.getMessage());
         }
