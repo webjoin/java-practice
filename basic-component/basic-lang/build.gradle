@@ -1,0 +1,19 @@
+
+
+
+dependencies {
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    compile 'org.apache.commons:commons-lang3'
+    compile 'com.alibaba:fastjson:1.2.68'
+    compile 'org.springframework.boot:spring-boot:2.3.2.RELEASE'
+    compile 'org.springframework:spring-web'
+    compile 'org.springframework:spring-context'
+    compile 'com.aliyun:aliyun-java-sdk-core:4.5.9'
+    compile 'org.apache.httpcomponents:httpclient:4.5.8'
+    //compile 'javax.servlet:servlet-api:2.5'
+
+//    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    //compile 'org.springframework.boot:spring-boot:2.3.2-RELEASE'
+}

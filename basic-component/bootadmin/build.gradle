@@ -1,0 +1,13 @@
+
+dependencies {
+    compile 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+//    compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile(project(":basic-component:basic-spring"))
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+//    compile 'org.springframework.cloud:spring-cloud-starter-config'
+//    compile 'de.codecentric:spring-boot-admin-starter-server:2.1.6'
+    compile 'de.codecentric:spring-boot-admin-starter-server:2.2.2'
+}
+
+

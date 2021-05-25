@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <properties resource="mybatis.generate.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <property name="beginningDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="com.iquickmove.mapper.generator.type.plugin.LombokPlugin">
+            <property name="hasLombok" value="true"/>
+        </plugin>
+
+        <commentGenerator type="com.iquickmove.mapper.generator.type.plugin.CommentGeneratorImpl">
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+
+        <jdbcConnection driverClass="${jdbc.class}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.username}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <javaTypeResolver type="com.iquickmove.mapper.generator.type.resolver.MyJavaTypeResolverDefaultImpl">
+            <property name="forceBigDecimals" value="false"/>
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="${javaModelGenerator.targetPackage}"
+                            targetProject="${user.dir}/../${entity.dir}"/>
+
+        <sqlMapGenerator targetPackage="${sqlMapGenerator.targetPackage}"
+                         targetProject="${user.dir}/../${mapperXml.dir}"/>
+
+        <javaClientGenerator targetPackage="${javaClientGenerator.targetPackage}"
+                             targetProject="${user.dir}/../${mapper.dir}"
+                             type="XMLMAPPER"/>
+
+        <table tableName="${tableName}" domainObjectName="${domainObjectName}" mapperName="${mapperName}"
+               enableCountByExample="${table.enableCountByExample}"
+               enableUpdateByExample="${table.enableUpdateByExample}"
+               enableDeleteByExample="${table.enableDeleteByExample}"
+               enableSelectByExample="${table.enableSelectByExample}"
+               selectByExampleQueryId="${table.selectByExampleQueryId}"
+               enableInsert="true"
+        >
+
+            <property name="useActualColumnNames" value="${useActualColumnNames}"/>
+<!--            <generatedKey column="${trade_id}" sqlStatement="MYSQL" identity="true"/>-->
+            <!--<columnRenamingRule searchString="t_" replaceString=""/>-->
+        </table>
+
+
+    </context>
+</generatorConfiguration>

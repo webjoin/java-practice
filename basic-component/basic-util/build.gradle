@@ -1,0 +1,12 @@
+dependencies {
+    compile 'org.springframework:spring-jdbc'
+    compile 'org.springframework:spring-web'
+    compile 'org.springframework:spring-context'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.64'
+    compile "org.yaml:snakeyaml:${snakeyamlVersion}"
+    compile "org.mybatis:mybatis:${mybatisVersion}"
+    compile "org.mybatis:mybatis-spring:${mybatisSpringVersion}"
+    compile 'mysql:mysql-connector-java'
+    compile 'com.zaxxer:HikariCP'
+    compile project(':basic-component:basic-lang')
+}

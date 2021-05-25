@@ -1,0 +1,50 @@
+server:
+  port: 7001
+
+
+spring:
+  application:
+    name: eureka
+  profiles:
+    active: local
+  security:
+    user:
+      name: eureka_medical
+      password: "eureka_medicalSDs55jshd"
+
+eureka:
+  server:
+    #   测试时关闭自我保护机制，保证不可用服务及时踢出
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 3000 #清理间隔（单位毫秒，默认是60*1000）
+  instance: #定义Eureka实例
+#    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+
+  #eureka默认情况下,把自己当做客户端来注册自己,所以我们要禁用它
+  client:
+    register-with-eureka: false #表示是否将自己注册到Eureka Server上，默认为true
+    fetch-registry: false       #表示是否从Eureka Server上获取注册信息，默认为true
+
+logging:
+  level:
+    root: warn
+
+info:
+  app:
+    name: ${spring.application.name}
+    address: ${spring.cloud.client.ip-address}:${server.port}
+    env: ${spring.profiles.active}
+    date: ${app.date}
+    branch: ${branch}
+  config:
+    version: ${config.version}
+
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

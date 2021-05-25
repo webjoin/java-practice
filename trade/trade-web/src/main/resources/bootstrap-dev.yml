@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      allow-override: true
+      uri: http://139.224.34.91:8001
+      discovery:
+        enabled: false
+eureka:
+  client:
+    enabled: false

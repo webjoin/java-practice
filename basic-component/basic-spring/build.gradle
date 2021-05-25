@@ -1,0 +1,12 @@
+
+dependencies {
+    compile project(':basic-component:basic-lang')
+
+    compile 'org.springframework:spring-web'
+    compile 'org.springframework:spring-context'
+    implementation 'javax.servlet:javax.servlet-api'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    compile 'org.springframework.security:spring-security-core:5.4.0'
+
+
+}

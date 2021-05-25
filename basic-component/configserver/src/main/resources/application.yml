@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: cs
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://code.aliyun.com/qm_medical/medical-config-prod1.git
+          username: elijaheasy
+          password: elijaheasy
+#          search-paths: config-repo
+          repos:
+            test:
+              pattern: "*/test"
+              uri: https://code.aliyun.com/wsmall/wsc-config-bridget-dev.git
+              username: elijaheasy
+              password: elijaheasy
+#              search-paths: config-repo
+            sim:
+              pattern:
+                - "*/prod"
+              uri: https://code.aliyun.com/qm_medical/medical-config-prod.git
+#              search-paths: config-repo
+              username: elijaheasy
+              password: elijaheasy
+  security:
+    user:
+      name: configserver
+      password: configserverujmhjk
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

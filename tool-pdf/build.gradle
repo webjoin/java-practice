@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'maven'
+}
+
+group 'cn.viewt'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+jar.enabled = true
+
+
+dependencies {
+    implementation 'org.apache.pdfbox:pdfbox:2.0.4'
+    implementation 'com.itextpdf:itextpdf:5.5.10'
+
+    implementation(platform('org.junit:junit-bom:5.7.0'))
+    implementation('org.junit.jupiter:junit-jupiter')
+}
+
+test {
+    useJUnitPlatform()
+}

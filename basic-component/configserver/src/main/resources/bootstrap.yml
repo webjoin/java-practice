@@ -1,0 +1,16 @@
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://eureka_medical:eureka_medicalSDs55jshd@172.16.29.87:7001/eureka,http://eureka_medical:eureka_medicalSDs55jshd@172.16.29.88:7002/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    home-page-url-path: ${server.servlet.context-path}
+
+
+
+logging:
+  level:
+    org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN

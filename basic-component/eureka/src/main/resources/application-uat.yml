@@ -1,0 +1,17 @@
+server:
+  port: 7001
+
+eureka:
+  server:
+    enable-self-preservation: true
+    eviction-interval-timer-in-ms: 60000
+  instance:                             #定义Eureka实例
+    hostname: eureka7001
+  #eureka默认情况下,把自己当做客户端来注册自己,所以我们要禁用它
+  client:
+    register-with-eureka: true #表示是否将自己注册到Eureka Server上，默认为true
+    fetch-registry: true       #表示是否从Eureka Server上获取注册信息，默认为true
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@eureka7002:7002/eureka/
+
+

@@ -1,0 +1,16 @@
+
+dependencies {
+
+    compile "org.mybatis.generator:mybatis-generator-core:${mybatisGeneratorCoreVersion}"
+    //compile "org.mybatis:mybatis-typehandlers-jsr310:${mybatisTypehandlersJsr310Version}"
+    compile 'org.apache.commons:commons-lang3'
+    testCompile('mysql:mysql-connector-java')
+//    implementation('org.springframework.boot:spring-boot-starter-test') {
+//        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+//    }
+//    implementation('org.junit.jupiter:junit-jupiter')
+    compile('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile('org.junit.jupiter:junit-jupiter')
+}
