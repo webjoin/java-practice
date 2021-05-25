@@ -9,4 +9,5 @@ include 'log-util'
 include 'member:member-api'
 include 'spring-util'
 include 'tool-pdf'
+include 'tool-ajax'
 

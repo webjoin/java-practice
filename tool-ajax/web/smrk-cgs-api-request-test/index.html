@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <script src="./md5-min.js"></script>
+        <!-- <script src="https://cdn.educba.com/md5.min.js"></script> -->
+        <!-- <script type="text/javascript" src="https://www.w3school.com.cn/jquery/jquery.js"></script> -->
+        <script type="text/javascript" src="./jQuery.js"></script>
+        <script type="text/javascript">
+            console.log(hex_md5("message digest"))
+            $(document).ready(function(){
+                
+                var token = "";
+                var timestamp = new Date().getTime()
+                var requestBoday = {"a":"a"};
+                var sign = hex_md5(token + JSON.stringify(requestBoday) + timestamp );
+                console.log("sign form -------->>"+token +'__'+ JSON.stringify(requestBoday) +'__'+ timestamp );
+                console.log("sign-------->>"+sign);
+                var headers = {"token": token,"timestamp": timestamp,'sign': ""}
+                $.ajax({
+                    url:'http://47.117.114.144:10085/api/ecs/user/login',
+                    //url:   'http://127.0.0.1:10085/api/ecs/user/login',
+                    // url:"http://47.117.114.144:8082/api/ecs/user/login",
+                    //url:"http://127.0.0.1:10082/question/rule/listQuestionRule",
+                    type:"POST",
+                    contentType:"application/json",
+                    data: requestBoday,
+                    success:function(d){
+                        console.log(d)
+                        $("#myDiv").html(d.responseText);
+                    },
+                    error:function(x,e,ext){
+                        console.log(e)
+                    }
+                });
+                
+
+            });
+        </script>
+    </head>
+    <body>
+        hi jing,<div id="myDiv"></div>
+    </body>
+</html>
