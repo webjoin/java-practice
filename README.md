@@ -5,11 +5,19 @@
 1. 环境
 ````
     a库：
-    CREATE TABLE a (
-    id int(11) unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (id)
-    ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-    
+create table a
+(
+    id      int unsigned auto_increment primary key,
+    id_name varchar(10)  null comment 'name',
+    age     int          null,
+    `desc`  varchar(100) null
+) charset = utf8;
+
+create table template
+(
+    id_name varchar(32)  null,
+    value   varchar(128) null
+);    
     b库：
     CREATE TABLE b (
     id int(11) unsigned NOT NULL AUTO_INCREMENT,
