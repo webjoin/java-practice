@@ -5,6 +5,27 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
+buildscript {
+    ext {
+        set('springCloudVersion', "Hoxton.SR6")
+        set('springBoot', "2.3.2.RELEASE")
+        set('dependencyManagement', "1.0.8.RELEASE")
+        set('mybatisSpringVersion', "2.0.0")
+        set('mybatisVersion', "3.5.1")
+        set('tkMybatis', "4.1.5")
+        set('snakeyamlVersion', "1.24")
+        set('junitBomVersion', "5.7.0")
+        set('mybatisTypehandlersJsr310Version', "1.0.1")
+        set('mybatisGeneratorCoreVersion', "1.4.0")
+        set('hibernateValidatorVersion', "6.0.2.Final")
+        set('lombokVersion', "1.18.8")
+        set('commonsIoVersion', "2.2")
+        set('commonsLangVersion', "3.10")
+        set('commonCollectionVersion', "4.4")
+        set('nexusUrl', "http://47.101.185.77:18089")
+    }
+
+}
 repositories {
     mavenCentral()
 }
@@ -18,5 +39,7 @@ dependencies {
     compile 'org.mybatis:mybatis:3.5.1'
     compile 'org.mybatis:mybatis-spring:2.0.0'
     compile 'org.springframework:spring-jdbc:5.1.5.RELEASE'
-    compile 'mysql:mysql-connector-java:6.0.5'
+    compile 'mysql:mysql-connector-java:8.0.21'
+    compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
+    implementation group: 'com.github.jsqlparser', name: 'jsqlparser', version: '4.0'
 }

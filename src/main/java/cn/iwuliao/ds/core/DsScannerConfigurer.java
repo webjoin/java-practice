@@ -4,6 +4,8 @@ import cn.iwuliao.ds.core.yml.PropertiesToYamlConverter;
 import cn.iwuliao.ds.core.yml.YamlConversionResult;
 import cn.iwuliao.ds.util.JsonUtil;
 import com.alibaba.druid.pool.DruidDataSource;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -137,11 +139,27 @@ public class DsScannerConfigurer {
     }
 
     private void registrySqlSessionFactoryBean(String mapperLocations, String typeHandlersPackage, String dbName, BeanDefinitionRegistry registry) {
+        RuntimeBeanReference[] runtimeBeanReferences = new RuntimeBeanReference[2];
+        {
+            runtimeBeanReferences[0] = new RuntimeBeanReference("MyBatisPlugin");
+            runtimeBeanReferences[1] = new RuntimeBeanReference("MyBatisPlugin1");
+        }
+
+        //BeanDefinitionBuilder.genericBeanDefinition(Interceptor.class).
+        //BeanDefinitionCustomizer::customize;
+        RuntimeBeanReference myBatisPlugin = new RuntimeBeanReference("MyBatisPlugin");
+        Object source = myBatisPlugin.getSource();
+        RuntimeBeanReference myBatisPlugin1 = new RuntimeBeanReference("MyBatisPlugin1");
+        Object source1 = myBatisPlugin1.getSource();
+
+
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder
                 .genericBeanDefinition(SqlSessionFactoryBean.class)
                 .addPropertyValue("dataSource", new RuntimeBeanReference(dbName))
                 .addPropertyValue("mapperLocations", mapperLocations)
-                .addPropertyValue("typeHandlersPackage", typeHandlersPackage);
+                .addPropertyValue("typeHandlersPackage", typeHandlersPackage)
+                .addPropertyReference("plugins", "MyBatisPlugin");
+
 
         registry.registerBeanDefinition(dbName + SQLSESSIONFACTORY, beanDefinitionBuilder.getBeanDefinition());
     }

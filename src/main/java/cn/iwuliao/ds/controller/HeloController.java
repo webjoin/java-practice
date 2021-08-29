@@ -3,7 +3,10 @@ package cn.iwuliao.ds.controller;
 import cn.iwuliao.ds.service.HeloService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author tangyu
@@ -46,6 +49,12 @@ public class HeloController {
             }
         }
         return "i am tx ";
+    }
+
+
+    @RequestMapping("/like")
+    public List<String> like(@RequestParam(name = "name") String name) {
+        return heloService.likeQry(name);
     }
 
 }
