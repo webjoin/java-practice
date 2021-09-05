@@ -4,7 +4,26 @@
 
     <select id="likeQry" resultType="string">
         SELECT name from a where name like
-          <bind name="pattern" value="'%' + _parameter.name + '%'" />
+        <bind name="pattern" value="'%' + _parameter.name + '%'"/>
         #{pattern}
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
     </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="insert.idKey" keyColumn="id">
+        insert into a(id_name,age,desc1,local_time, local_date, local_date_time)
+        values(#{idName},#{insert.age},#{insert.desc1},#{insert.localTime},#{insert.localDate},#{insert.localDateTime} )
+    </insert>
+
+    <update id="update">
+        UPDATE a SET id_name = #{idName}, age = #{age}, desc1 = #{desc1},local_time = #{localTime},local_date =
+        #{localDate},local_date_time = #{localDateTime}WHERE id = #{idKey};
+    </update>
+    <delete id="delete">
+        <!--delete from a where id in <foreach collection="list" open="(" close=")" separator="," item="val" > #{val} </foreach>-->
+        delete from a where  age = #{age} and id = #{val} and desc1 = #{desc1}
+    </delete>
+    <delete id="deleteForeach">
+        delete from a where id in <foreach collection="list" open="(" close=")" separator="," item="val" > #{val} </foreach>
+    </delete>
 </mapper>

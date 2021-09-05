@@ -1,6 +1,7 @@
 package cn.iwuliao.ds.service;
 
 import cn.iwuliao.ds.core.DsScannerConfigurer;
+import cn.iwuliao.ds.domain.AEntity;
 import cn.iwuliao.ds.mapper.dba.AMapper;
 import cn.iwuliao.ds.mapper.dbb.MapperB;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -9,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,7 +22,6 @@ import java.util.List;
  */
 @Service
 public class HeloServiceImpl implements HeloService {
-
 
     @Autowired
     private AMapper aMapper;
@@ -33,20 +37,32 @@ public class HeloServiceImpl implements HeloService {
 
     @Override
     @Transactional(transactionManager = "dba" + DsScannerConfigurer.TRANSACTIONMANAGER, rollbackFor = Exception.class)
-    public Integer commit() {
-        int id = Integer.parseInt(RandomStringUtils.randomNumeric(3));
-        int age = Integer.parseInt(RandomStringUtils.randomNumeric(2));
-        aMapper.insert(id, age);
-        return id;
+    public Long commit() {
+        int age = Integer.parseInt(RandomStringUtils.randomNumeric(3));
+        AEntity entity = AEntity.builder().age(age).desc1("desc::" + RandomStringUtils.randomAlphanumeric(5))
+            .idName("idName::" + RandomStringUtils.randomAlphanumeric(5)).localTime(LocalTime.now().plusMinutes(age))
+            .localDate(LocalDate.now().plusDays(age)).localDateTime(LocalDateTime.now()).build();
+        aMapper.insert(entity, "+" + entity.getIdName());
+        entity.setIdName("idName::new::" + RandomStringUtils.randomAlphanumeric(5));
+        aMapper.update(entity);
+        aMapper.updateById(entity.getAge() + 1, entity.getIdKey());
+
+        // aMapper.delete(11, "desc1", entity.getIdKey());
+        // aMapper.deleteForeach(Arrays.asList(entity.getIdKey(), entity.getIdKey()));
+        return entity.getIdKey();
     }
 
     @Override
     @Transactional(transactionManager = "dba" + DsScannerConfigurer.TRANSACTIONMANAGER, rollbackFor = Exception.class)
     public Integer rollback() {
-        int id = Integer.parseInt(RandomStringUtils.randomNumeric(3));
-        int age = Integer.parseInt(RandomStringUtils.randomNumeric(3));
-        Integer id1 = aMapper.insert(id, age);
+        int age = Integer.parseInt(RandomStringUtils.randomNumeric(2));
+        AEntity entity = AEntity.builder().age(age).desc1("desc::" + RandomStringUtils.randomAlphanumeric(5))
+            .idName("idName::" + RandomStringUtils.randomAlphanumeric(5)).localTime(LocalTime.now().plusMinutes(age))
+            .localDate(LocalDate.now().plusDays(age)).localDateTime(LocalDateTime.now()).build();
+        Integer id1 = aMapper.insert(entity, "+" + entity.getIdName());
 
+        entity.setIdName("idName::new::" + RandomStringUtils.randomAlphanumeric(5));
+        aMapper.update(entity);
         int i = id1 / 0;
         return id1;
     }

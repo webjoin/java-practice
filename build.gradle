@@ -42,4 +42,5 @@ dependencies {
     compile 'mysql:mysql-connector-java:8.0.21'
     compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
     implementation group: 'com.github.jsqlparser', name: 'jsqlparser', version: '4.0'
+    compile "tk.mybatis:mapper:${tkMybatis}"
 }

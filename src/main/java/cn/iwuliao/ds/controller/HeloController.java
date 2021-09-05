@@ -16,13 +16,11 @@ import java.util.List;
 @RequestMapping("/hi")
 public class HeloController {
 
-
     private HeloService heloService;
 
     public HeloController(HeloService heloService) {
         this.heloService = heloService;
     }
-
 
     @RequestMapping("/hi")
     public String hi() {
@@ -33,12 +31,11 @@ public class HeloController {
         return "hia:" + hia + "<-->hib:" + hib;
     }
 
-
     @RequestMapping("/tx/{commit}")
     public String tx(@PathVariable("commit") String commit) {
 
         if ("commit".equals(commit)) {
-            Integer commit1 = heloService.commit();
+            Long commit1 = heloService.commit();
             System.out.println("it has commited ? " + (commit1 > 0));
         } else {
             Integer commit1 = 0;
@@ -50,7 +47,6 @@ public class HeloController {
         }
         return "i am tx ";
     }
-
 
     @RequestMapping("/like")
     public List<String> like(@RequestParam(name = "name") String name) {

@@ -10,7 +10,7 @@ druid2:
 #        - cn.iwuliao.ds.mapper.plugin.MyBatisPlugin
 
       master:
-        url: jdbc:mysql://10.211.55.7:3306/dba?serverTimezone=Hongkong
+        url: jdbc:mysql://10.211.55.5:3306/dba?serverTimezone=Hongkong
         driverClassName: com.mysql.cj.jdbc.Driver
         username: root
         password: rootroot!123R
@@ -19,7 +19,7 @@ druid2:
         maxActive: '20'
         testOnBorrow: 'true'
       slave:
-        url: jdbc:mysql://10.211.55.7:3306/dba?serverTimezone=Hongkong
+        url: jdbc:mysql://10.211.55.5:3306/dba?serverTimezone=Hongkong
         driverClassName: com.mysql.cj.jdbc.Driver
         username: root
         password: rootroot!123R
@@ -32,7 +32,7 @@ druid2:
       typeHandlersPackage:
       mapperScannerPackage: cn.iwuliao.ds.mapper.dbb
       master:
-        url: jdbc:mysql://10.211.55.7:3306/dbb?serverTimezone=Hongkong
+        url: jdbc:mysql://10.211.55.5:3306/dbb?serverTimezone=Hongkong
         driverClassName: com.mysql.cj.jdbc.Driver
         username: root
         password: rootroot!123R
@@ -41,7 +41,7 @@ druid2:
         maxActive: '20'
         testOnBorrow: 'true'
       slave:
-        url: jdbc:mysql://10.211.55.7:3306/dbb?serverTimezone=Hongkong
+        url: jdbc:mysql://10.211.55.5:3306/dbb?serverTimezone=Hongkong
         driverClassName: com.mysql.cj.jdbc.Driver
         username: root
         password: rootroot!123R

@@ -15,7 +15,7 @@ public interface HeloService {
 
     Integer hia();
 
-    Integer commit();
+    Long commit();
 
     Integer rollback();
 
